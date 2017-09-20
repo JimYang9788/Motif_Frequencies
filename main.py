@@ -12,6 +12,8 @@ class Vertex:
         return self.connectedTo.keys()
 
 data_set = {}
+
+#Change source
 source  = open("facebook_combined.txt", "r")
 
 ID = ""
@@ -21,13 +23,12 @@ for i in source.readlines():
     while i[pos] != " ":
         ID = ID + i[pos]
         pos = pos + 1
-    #print ID
+
     while i[pos] == " ":
         pos = pos + 1
     while i[pos] != " ":
         Adjacent = Adjacent + i[pos]
         pos = pos + 1
-    #print (ID + " " + Adjacent)
 
     if ID in data_set.keys():
         Vertex.addNeighbor(data_set[ID], Adjacent, 1)
@@ -41,29 +42,20 @@ for i in source.readlines():
         data_set[Adjacent] = Vertex(Adjacent)
         Vertex.addNeighbor(data_set[Adjacent], ID, 1)
 
-    #print data_set[ID].connectedTo.keys()
     ID = ""
     Adjacent = ""
-    # Here we reset the value of ID and Adjacent values
     #print length
 
 total_nodes =  len (data_set.keys())
-#for key, values in data_set.items():
-    #print (values.id)
-    #print (key)
-    #print values.id
-    #print values.connectedTo.keys()
-    #print (Vertex.getConnections(values))
+
 source.close()
 
-#data_list = data_set.keys()
-#print len(data_list)
-
-#print length
 def size_three_motif ():
     total = 0
     open_triangle = 0
     closed_triangle = 0
+
+    #5000 sample trials. Change in later.
     for i in range(0, 5000):
         random1 = random.randint(0, total_nodes - 1)
         #randomly pick one data point from the ID list generated
@@ -86,12 +78,14 @@ def size_three_motif ():
         #Making sure that random 1,2,3 are different
         while random3 == random1 or random3 == random2:
             random3 = random.randint(0, n2_len + n1_len - 1)
+
+        #n3_node is selected from the all neibour nodes for n1 and n2
         n3_key = (Vertex.getConnections(n2_node)+Vertex.getConnections(n1_node))[random3]
         n3_node = data_set[n3_key]
         #print n1_key + " " + n2_key + " " + n3_key
         total = total + 1
 
-        if n1_key in Vertex.getConnections(n3_node):
+        if (n2_key in Vertex.getConnections(n3_node)) and (n3_key in Vertex.getConnections(n1_node)):
             closed_triangle = closed_triangle + 1
         else:
             open_triangle = open_triangle + 1
@@ -102,12 +96,13 @@ def size_three_motif ():
     print total
 
 
-
 size_three_motif ()
 
+#Below are some sample trials
 #3000 2000
 #2900 2000
 #2950 2050
 #2955 2045
 #2956 2944
 #2999 2001
+#3013 1987
