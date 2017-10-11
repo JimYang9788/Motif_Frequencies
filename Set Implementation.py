@@ -16,9 +16,7 @@ total_vertices = len(vertices)
 source_file.close()
 
 data_set = [set() for i in range(total_vertices)]  # Create a data_set with size equal to the number of vertices
-
 total_edges = 0
-size_set = []  # size set is an array of number of neighbours that each vertex has
 
 def generate_graph():
     source_file = open("facebook_combined.txt", "r")
@@ -31,17 +29,12 @@ def generate_graph():
 
     return total_edges
 
-generate_graph()
-
-
-
-
 def sampling_first_pair ():
     chosen_vertices = []
     chosen_edges = []
     neighbour_list = []
     data_array = []
-    size_set = []
+    size_set = []  # size set is an array of number of neighbours that each vertex has
     total_edges = 0
 
     for j in data_set:
@@ -115,9 +108,8 @@ def sampling_rest (n, chosen_vertices, chosen_edges, neighbour_list):
     # print chosen_vertices
 
 
-
 def motif_sampling (n, trial_times):
-    sampling_first_pair()
+    generate_graph()
     for k in range(trial_times):
         result = sampling_first_pair()
         chosen_vertices = result[0]
@@ -127,7 +119,5 @@ def motif_sampling (n, trial_times):
         for j in chosen_edges:
             data_set[j[0]].add(j[1])
             data_set[j[1]].add(j[0])
-
-
 
 motif_sampling(7, 5000)
