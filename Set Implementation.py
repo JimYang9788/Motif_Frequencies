@@ -1,4 +1,5 @@
 import random
+import copy
 from sets import Set
 
 # The 0th item is adjacency_list[0], {1,2,3,4,5,6,7}
@@ -20,6 +21,9 @@ adjacency_list = [set() for i in range(total_vertices)]
 
 total_edges = 0
 
+copy_adjacency_list = [set() for i in range(total_vertices)]
+
+
 def generate_graph():
     source_file = open("facebook_combined.txt", "r")
 
@@ -27,8 +31,16 @@ def generate_graph():
         current_edge = i.split()
         (adjacency_list[int((current_edge[0]))]).add(int(current_edge[1]))
         (adjacency_list[int((current_edge[1]))]).add(int(current_edge[0]))
-    source_file.close
+    source_file.close()
 
+    source_file = open("facebook_combined.txt", "r")
+    for i in source_file.readlines():
+        current_edge = i.split()
+        (copy_adjacency_list[int((current_edge[0]))]).add(int(current_edge[1]))
+        (copy_adjacency_list[int((current_edge[1]))]).add(int(current_edge[0]))
+
+
+    source_file.close
     return total_edges
 
 def sampling_first_pair ():
@@ -114,8 +126,6 @@ def sampling_rest (n, chosen_vertices, chosen_edges, neighbour_list, add_back_li
                 break
 
         n = n - 1
-    # print chosen_edges
-    print chosen_vertices
 
 
 def motif_sampling (n, trial_times):
@@ -126,12 +136,68 @@ def motif_sampling (n, trial_times):
         chosen_vertices = result[0]
         chosen_edges = result[1]
         neighbour_list = result [2]
-        add_back_list = result[1]
+        add_back_list = [(result[1])[0]]
         sampling_rest(n - 1, chosen_vertices, chosen_edges, neighbour_list, add_back_list)
+
+        #
+        # print chosen_vertices
+        # print add_back_list
 
         for j in add_back_list:
             adjacency_list[j[0]].add(j[1])
             adjacency_list[j[1]].add(j[0])
 
+        size_five(chosen_vertices)
 
-motif_sampling(7, 1000)
+
+def size_three (chosen_vertices):
+    num_list = [0,0,0]
+    if chosen_vertices[0] in adjacency_list[(chosen_vertices[1])]:
+        num_list[0] = num_list[0] + 1
+    if chosen_vertices[0] in adjacency_list[(chosen_vertices[2])]:
+        num_list[0] = num_list[0] + 1
+
+    if chosen_vertices[1] in adjacency_list[(chosen_vertices[0])]:
+        num_list[1] = num_list[1] + 1
+    if chosen_vertices[1] in adjacency_list[(chosen_vertices[2])]:
+        num_list[1] = num_list[1] + 1
+
+    if chosen_vertices[2] in adjacency_list[(chosen_vertices[0])]:
+        num_list[2] = num_list[2] + 1
+    if chosen_vertices[2] in adjacency_list[(chosen_vertices[1])]:
+        num_list[2] = num_list[2] + 1
+
+    num_list.sort()
+    size_code = "".join([str(num) for num in num_list])
+    if size_code == "112":
+        print "type1"
+    elif size_code == "222":
+        print "type2"
+    else:
+        print "Something went wrong"
+
+def size_five (chosen_vertices):
+    num_list = [[],[],[],[],[]]
+    neighbour_number = [0,0,0,0,0]
+    unique_code = ["" for i in range(5)]
+    result_list = [[],[],[],[],[]]
+
+    for i in range(5):
+        for j in range(5):
+            if chosen_vertices[i] in copy_adjacency_list[chosen_vertices[j]]:
+                num_list[i] = num_list[i] + [j]
+                neighbour_number[i] = neighbour_number[i] + 1
+
+    for i in range(5):
+        for j in range(len(num_list[i])):
+            result_list[i] = result_list[i] + [neighbour_number[(num_list[i][j])]]
+        result_list[i].sort(reverse=True)
+
+    for i in range(5):
+        unique_code[i] = "".join(str(j) for j in result_list[i])
+
+    unique_code.sort(key = len, reverse=True)
+    num_list.sort(reverse=True)
+    neighbour_number.sort(reverse=True)
+
+motif_sampling(4, 2000)
