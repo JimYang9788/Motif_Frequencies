@@ -196,8 +196,62 @@ def size_five (chosen_vertices):
     for i in range(5):
         unique_code[i] = "".join(str(j) for j in result_list[i])
 
+    unique_code.sort()
     unique_code.sort(key = len, reverse=True)
+    unique_code = "".join(unique_code)
     num_list.sort(reverse=True)
     neighbour_number.sort(reverse=True)
+
+    if unique_code == "11114444":
+        print "type1"
+    elif unique_code == "21131233":
+        print "type2"
+    elif unique_code == "2211424244":
+        print "type3"
+    elif unique_code == "21212222":
+        print "type4"
+    elif unique_code == "3213213333":
+        print "type5"
+    elif unique_code == "2212232323":
+        print "type6"
+    elif unique_code == "322142243434":
+        print "type7"
+    elif unique_code == "2223132322":
+        print "type8"
+    elif unique_code == "331332332333":
+        print "type9"
+    elif unique_code == "33314334334334":
+        print "type10"
+    elif unique_code == "222222333333":
+        print "type11"
+    elif unique_code == "42224222444444":
+        print "type12"
+    elif unique_code == "222242424242":
+        print "type13"
+    elif unique_code == "2222222222":
+        print "type14"
+    elif unique_code == "322322323233":
+        print "type15"
+    elif unique_code == "33224324324343":
+        print "type16"
+    elif unique_code == "33233233333333":
+        print "type17"
+    elif unique_code == "4332433244344344":
+        print "type18"
+    elif unique_code == "3333433433433433":
+        print "type19"
+    elif unique_code == "443344334433444444":
+        print "type20"
+    elif unique_code == "44444444444444444444":
+        print "type21"
+    else:
+        print "Unknown type"
+        print unique_code
+        print neighbour_number
+        print "\n"
+
+
+
+
 
 motif_sampling(4, 2000)
