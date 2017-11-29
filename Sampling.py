@@ -146,6 +146,6 @@ def motif_sampling(size, trials, data):
     generate_graph(data)
     for i in range(trials):
         sampling(size)
-
+  
 
 motif_sampling(6, 1000, "facebook_combined.txt")
